@@ -1,0 +1,114 @@
+================ C语言阶段性考试 答题卡 ================
+姓名：            日期：            用时：
+
+一、选择题（每题3分，共30分）
+1. b
+2. a
+3. b
+4. b
+5. c
+6. c
+7. b
+8. c
+9. a
+10.c 
+
+二、填空题（每题4分，共20分）
+11. scanf("%d",&n);
+12. scanf("%lf",&d);  printf(%.3f,d);
+13. %
+14. for (int i = 1;i<=10;++i)
+15. while (i<=100) {sum += i;++i;}
+
+三、代码阅读题（每题10分，共20分）
+16. B
+17. 12
+18. 0 1 2
+
+四、编程题（共30分）
+19. 判断闰年
+#include <stdio.h>
+
+int isleapyear(int year)
+{
+    if((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int main()
+{
+    int year;
+    scanf("%d",&year);
+    if(isleapyear(year))
+    {
+        printf("%d是闰年\n",year);
+    }
+    else
+    {
+        printf("%d不是闰年\n",year);
+    }
+    return 0;
+}
+
+
+20. 打印乘法表
+#include <stdio.h>
+int main()
+{
+    int number;
+    scanf("%d",&number);
+    for(int i=1;i<=number;++i)
+    {
+        for(int j=1;j<=i;++j)
+        {
+            printf("%d*%d=%d ",i,j,(j*i));
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+
+21. 猜数字游戏
+#include <stdio.h>
+#include <stdbool.h>
+
+int main()
+{
+    bool guess_success = false;
+    int target = 42;
+    int guess_number;
+    for(int i=0;i<5;++i)
+    {
+        scanf("%d",&guess_number);
+        if(guess_number > target)
+        {
+            printf("太大了");
+        }
+
+        else if(guess_number < target)
+        {
+            printf("太小了");
+        }
+
+        else
+        {
+            printf("猜对了");
+            guess_success = true;
+            break;
+        }
+    }
+    if(!guess_success)
+    {
+        printf("游戏结束,正确答案是%d",target);
+    }
+    return 0;
+}
+
+================ 考试结束 ================
