@@ -35,7 +35,7 @@ bool initlist(LinkedList *list)
     return true;
 }
 
-void destoryList(LinkedList *list)
+void destroyList(LinkedList *list)
 {
     if(list == NULL || list->head == NULL)
     {
@@ -106,6 +106,43 @@ bool insertTail(LinkedList *list,int value)
     return true;
 }
 
+bool insertAt(LinkedList *list,size_t index,int value)
+{
+    if(list == NULL || list->head == NULL)
+    {
+        return false;
+    }
+
+    if(index > list->size)
+    {
+        return false;
+    }
+
+    if(index == 0)
+    {
+        return insertHead(list,value);
+    }
+
+    if(index == list->size)
+    {
+        return insertTail(list,value);
+    }
+    Node *prev = list->head;
+    for(size_t i=0;i<index;++i)
+    {
+        prev = prev->next;
+    }
+    Node *p =createNode(value);
+    if(p == NULL)
+    {
+        return  false;
+    }
+    p->next = prev->next;
+    prev->next = p;
+    list->size++;
+    return true;
+}
+
 void printList(const LinkedList *list)
 {
     if(list == NULL || list->head == NULL)
@@ -132,6 +169,6 @@ int main()
         insertTail(&list,i);
     }
     printList(&list);
-    destoryList(&list);
+    destroyList(&list);
     return 0;
 }
