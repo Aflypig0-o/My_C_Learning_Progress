@@ -1,3 +1,4 @@
 *.exe
 q*.c
 test*.c
+*.o
