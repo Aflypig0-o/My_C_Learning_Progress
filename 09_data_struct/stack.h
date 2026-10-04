@@ -14,6 +14,6 @@ bool isFull(const Stack* stack);
 bool isEmpty(const Stack* stack);
 bool push(Stack* stack, int value);
 bool pop(Stack* stack, int* out);
-bool peek(Stack* stack, int* out);
+bool peek(const Stack* stack, int* out);
 
 #endif // STACK_H
