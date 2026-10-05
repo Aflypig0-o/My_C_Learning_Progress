@@ -28,15 +28,14 @@ bool push(Stack* stack, int value)
     return true;
 }
 
-bool pop(Stack* stack,int *out)
+bool pop(Stack* stack, int* out) 
 {
     if(isEmpty(stack)) 
     {
         fprintf(stderr, "Stack underflow: cannot pop\n");
         return false;
     }
-    *out = stack->data[stack->top];
-    --stack->top;
+    *out = stack->data[stack->top--];
     return true;
 }
 
