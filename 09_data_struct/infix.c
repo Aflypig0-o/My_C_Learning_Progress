@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include "stack.h"
+#include "char_stack.h"
 #include "infix.h"
 
 static int precedence(char op)
@@ -18,5 +18,25 @@ static int precedence(char op)
             return 3;
         default:
             return 0;
+    }
+}
+
+bool infix_to_postfix(const char *exper,char *output,int output_size)
+{
+    CharStack stack;
+    char_stack_init(&stack);
+    int output_index = 0;
+    for(output_index;exper[output_index] != '\0';++output_index)
+    {
+        char token = exper[output_index];
+        if(isspace(token))
+        {
+            continue;
+        }
+        if(isdigit(token))
+        {
+            char_stack_push(&stack,token);
+        }
+        
     }
 }
