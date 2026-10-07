@@ -4,6 +4,6 @@
 #include <stdbool.h>
 
 // Function declarations for postfix expression evaluation
-bool eval_postfix(const char *expression, int *result);
+bool eval_postfix(const char *experssion, int *result);
 
 #endif // POSTFIX_H

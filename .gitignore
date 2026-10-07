@@ -3,3 +3,4 @@ q*.c
 test*.c
 *.o
 *.txt
+special/

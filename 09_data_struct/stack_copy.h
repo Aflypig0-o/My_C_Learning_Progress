@@ -1,5 +1,5 @@
-#ifndef STACK.H
-#define STACK.H
+#ifndef STACK_COPY_H
+#define STACK_COPY_H
 #define MAX_SIZE 100
 #include <stdbool.h>
 
