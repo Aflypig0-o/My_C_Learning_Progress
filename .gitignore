@@ -4,4 +4,4 @@ test*.c
 *.o
 *.txt
 special/
-11_str_practice/
+
