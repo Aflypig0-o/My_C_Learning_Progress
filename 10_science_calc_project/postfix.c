@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "doublestack.h"
 #include "postfix.h"
 
@@ -62,6 +63,9 @@ bool eval_postfix(Token *postfix, int count, double *result)
                         return false;
                     }
                     result_value = operand1 / operand2;
+                    break;
+                case '^':
+                    result_value = pow(operand1,operand2);
                     break;
                 default:
                     fprintf(stderr, "Invalid operator\n");

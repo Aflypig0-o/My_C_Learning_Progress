@@ -20,7 +20,7 @@ bool doublestack_push(Doublestack *doublestack,double value)
 {
     if(doublestack_is_full(doublestack))
     {
-        fprintf(stderr,"Doublestack is full");
+        fprintf(stderr,"Doublestack is full\n");
         return false;
     }
     doublestack->top++;
@@ -32,7 +32,7 @@ bool doublestack_pop(Doublestack *doublestack,double *output)
 {
     if(doublestack_is_empty(doublestack))
     {
-        fprintf(stderr,"Doublestack is empty");
+        fprintf(stderr,"Doublestack is empty\n");
         return false;
     }
     *output = doublestack->data[doublestack->top];
@@ -44,7 +44,7 @@ bool doublestack_peek(Doublestack *doublestack,double *output)
 {
     if(doublestack_is_empty(doublestack))
     {
-        fprintf(stderr,"Doublestack is empty");
+        fprintf(stderr,"Doublestack is empty\n");
         return false;
     }
     *output = doublestack->data[doublestack->top];

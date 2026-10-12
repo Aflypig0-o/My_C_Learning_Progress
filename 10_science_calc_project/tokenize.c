@@ -17,22 +17,26 @@
  */
 int priority(char op)
 {
-    if (op == '+' || op == '-') return 1;
-    if (op == '*' || op == '/') return 2;
-    if (op == '^') return 3;
-    return 0;
+    switch(op)
+    {
+        case '!':return 4;
+        case '^':return 3;
+        case '*':case'/':return 2;
+        case '+':case'-':return 1;
+        default:return 0;
+    }
 }
 
 /*
  * is_op —— 判断字符是否为运算符
  *
- * 支持的运算符：+ - * / ^
+ * 支持的运算符：+ - * / ^ !
  * 注意：'-' 既可以是负号（一元），也可以是减号（二元），
  * 这里统一返回 true，具体语义由 tokenize 根据上下文判断。
  */
 bool is_op(char c)
 {
-    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+    return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '!';
 }
 
 /*

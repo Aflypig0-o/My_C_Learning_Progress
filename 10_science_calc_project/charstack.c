@@ -20,7 +20,7 @@ bool charstack_push(Charstack *charstack,char op)
 {
     if(charstack_is_full(charstack))
     {
-        fprintf(stderr,"Stack is full");//栈满无法压栈
+        fprintf(stderr,"Stack is full\n");//栈满无法压栈
         return false;
     }
     charstack->top++;
@@ -32,7 +32,7 @@ bool charstack_pop(Charstack *charstack,char *out)
 {
     if(charstack_is_empty(charstack))
     {
-        fprintf(stderr,"Stack is empty");//栈空无法弹出
+        fprintf(stderr,"Stack is empty\n");//栈空无法弹出
         return false;
     }
     *out = charstack->data[charstack->top];
@@ -44,7 +44,7 @@ bool charstack_peek(const Charstack *charstack,char *out)
 {
     if(charstack_is_empty(charstack))
     {
-        fprintf(stderr,"Stack is empty");//栈空无法看栈顶
+        fprintf(stderr,"Stack is empty\n");//栈空无法看栈顶
         return false;
     }
     *out = charstack->data[charstack->top];

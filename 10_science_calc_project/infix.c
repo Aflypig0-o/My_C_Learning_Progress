@@ -242,7 +242,7 @@ bool infix_to_postfix(Token *in, int count, Token *out, int max_out,int *out_cou
             return false;
         }
     }
-
+    *out_count = out_count_local;
     // 全部处理完毕，返回成功
     return true;
 }
