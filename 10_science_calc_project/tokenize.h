@@ -16,7 +16,8 @@ typedef enum
     TOKEN_NUMBER,   // 数字
     TOKEN_OP,       // 运算符
     TOKEN_LPAREN,   // 左括号
-    TOKEN_RPAREN    // 右括号
+    TOKEN_RPAREN,    // 右括号
+    TOKEN_IM //虚数
 } TokenType;
 
 /*

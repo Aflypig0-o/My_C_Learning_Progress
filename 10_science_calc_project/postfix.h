@@ -2,6 +2,7 @@
 #define POSTFIX_H
 #include <stdbool.h>
 #include "tokenize.h"
+#include "complex.h"
 
 /*
  * eval_postfix —— 计算后缀表达式（逆波兰表达式）的值
@@ -23,6 +24,8 @@
  *     true  - 计算成功，result 里存好了结果
  *     false - 出错（操作数不足、除零、非法运算符等）
  */
-bool eval_postfix(Token *postfix, int count, double *result);
+bool eval_postfix_basic(Token *postfix, int count, double *result);
+
+bool eval_postfix_complex(Token *postfix,int count,Complex *result);
 
 #endif

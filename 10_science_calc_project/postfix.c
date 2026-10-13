@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 #include "doublestack.h"
+#include "complexstack.h"
 #include "postfix.h"
 
-bool eval_postfix(Token *postfix, int count, double *result)
+bool eval_postfix_basic(Token *postfix, int count, double *result)
 {
     // 参数合法性检查
     if (postfix == NULL || result == NULL)
@@ -88,6 +89,59 @@ bool eval_postfix(Token *postfix, int count, double *result)
     if(!doublestack_is_empty(&ds))
     {
         fprintf(stderr,"Extra operands in stack\n");
+        return false;
+    }
+    return true;
+}
+
+bool eval_postfix_complex(Token *postfix,int count,Complex *result)
+{
+    if(postfix == NULL || result == NULL)
+    {
+        return false;
+    }
+    Complexstack cps;
+    complexstack_init(&cps);
+    for(int i = 0;i<count;++i)
+    {
+        if(postfix[i].type == TOKEN_NUMBER)
+        {
+            Complex c = {postfix[i].value,0.0};
+            complexstack_push(&cps,c);
+        }
+        else if(postfix[i].type == TOKEN_IM)
+        {
+            Complex c = {0.0,1.0};
+            complexstack_push(&cps,c);
+        }
+        else
+        {
+            Complex operand2,operand1;
+            if(!complexstack_pop(&cps,&operand2) || !complexstack_pop(&cps,&operand1))
+            {
+                fprintf(stderr,"Not enough operands\n");
+                return false;
+            }
+            Complex result;
+            switch(postfix[i].op)
+            {
+                case '+': result = complex_add(operand1,operand2);break;
+                case '-': result = complex_sub(operand1,operand2);break;
+                case '*': result = complex_mul(operand1,operand2);break;
+                case '/': result = complex_div(operand1,operand2);break;
+                default:return false;
+            }
+            complexstack_push(&cps,result);
+        }
+    }
+    if(!complexstack_pop(&cps,result))
+    {
+        fprintf(stderr,"No result in the stack\n");
+        return false;
+    }
+    if(!complexstack_is_empty(&cps))
+    {
+        fprintf(stderr,"Extra operands in the stack\n");
         return false;
     }
     return true;

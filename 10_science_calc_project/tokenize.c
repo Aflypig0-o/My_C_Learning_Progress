@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "tokenize.h"
+#include "complex.h"
 
 /*
  * priority —— 返回运算符的优先级
@@ -142,7 +143,41 @@ bool tokenize(char *s, Token *token, int max_token, int *c)
             token[count].type = TOKEN_NUMBER;//是数字
             token[count].value = strtod(buf,NULL);
             ++count;
+            if(i < len && s[i] == 'i')
+            {
+                if(count >= max_token)
+                {
+                    free(buf);
+                    fprintf(stderr,"Token array overflow\n");
+                    return false;
+                }
+                token[count].type = TOKEN_OP;
+                token[count].op = '*';
+                ++count;
+                if(count >= max_token)
+                {
+                    free(buf);
+                    fprintf(stderr,"Token array overflow\n");
+                    return false;
+                }
+                token[count].type = TOKEN_IM;
+                token[count].op = 'i';
+                ++count;
+                ++i;
+            }
             free(buf);//释放内存防止泄露
+            continue;
+        }
+        if(s[i] == 'i')
+        {
+            if(count >= max_token)
+            {
+                fprintf(stderr, "Token array overflow\n");
+                return false;
+            }
+            token[count].type = TOKEN_IM;
+            ++count;
+            ++i;
             continue;
         }
         if(is_op(s[i]))//判断运算符

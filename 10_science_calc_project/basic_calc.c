@@ -22,7 +22,7 @@ bool handle_basic_calc(char *expression,Token *token_in,Token *token_out,double 
         return false;
     }
 
-    if(!eval_postfix(token_out,postfix_count,result))
+    if(!eval_postfix_basic(token_out,postfix_count,result))
     {
         return false;
     }
