@@ -34,11 +34,10 @@
 // 注意: 当前实现未完成，下面这行有 bug：
 //       第一个参数应为 filename 而非 fp
 // ----------------------------------------------------------------------------
-char *io_read_file(const char *filename)
+/*char *io_read_file(const char *filename)
 {
-    // BUG: 第一个参数应为 filename，而非 fp（fp 此时还未定义）
-    FILE *fp = fopen(fp,"r");
-}
+    FILE *fp = fopen(filename,"r");
+}*/
 
 // ----------------------------------------------------------------------------
 // 转小写（原地修改）
@@ -129,4 +128,40 @@ void io_trim(char *s)
     int len = end-start;
     memmove(s,s+start,len);
     s[len] = '\0';
+
 }
+
+ bool is_blank_line(const char *s)
+{
+        for(;*s;++s)
+        {
+            if(!isspace((unsigned char)*s))
+            {
+                return false;
+            }
+        }
+        return true;
+}
+
+long long get_file_size(const char *path)
+{
+    FILE *fp = fopen(path,"rb");
+    if(fp == NULL)
+    {
+        perror("fopen");
+        return -1;
+    }
+    if(fseek(fp,0,SEEK_END)!= 0)
+    {
+        fclose(fp);
+        return -1;
+    }
+    long size = ftell(fp);
+    fclose(fp);
+    if(size < 0 )
+    {
+        return -1;
+    }
+    return (long long)size;
+}
+

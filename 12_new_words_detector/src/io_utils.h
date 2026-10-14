@@ -85,4 +85,8 @@ void io_to_lower(char *s);
 // ----------------------------------------------------------------------------
 void io_trim(char *s);
 
+bool is_blank_line(const char *s);
+
+long long get_file_size(const char *path);
+
 #endif
