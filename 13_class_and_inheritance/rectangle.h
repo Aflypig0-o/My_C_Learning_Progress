@@ -7,8 +7,8 @@ typedef struct
     int height;
 }Rectangle;
 
-void Rect_init(Rectangle *this, int w, int h);
-int Rect_area(Rectangle *this);
-int Rect_perimeter(Rectangle *this);
+void rect_init(Rectangle *this, int w, int h);
+int rect_area(Rectangle *this);
+int rect_perimeter(Rectangle *this);
 
 #endif 
