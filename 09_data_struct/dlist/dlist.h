@@ -2,14 +2,17 @@
 #define DLIST_H
 #include <stdlib.h>
 
-typedef struct DNode
+typedef struct DNode DNode;
+typedef struct DLinkedList DLinkedList;
+
+struct DNode
 {
     int data;
     DNode *next;
     DNode *prev;
-}DNode;
+};
 
-typedef struct DLinkedList
+struct DLinkedList
 {
     DNode *head;
     DNode *tail;
@@ -19,7 +22,7 @@ typedef struct DLinkedList
     void (*print_forward)(DLinkedList *self);
     void (*print_backward)(DLinkedList *self);
     void (*destroy)(DLinkedList *self); 
-}DLinkedList;
+};
 
 DLinkedList *create_list();
 

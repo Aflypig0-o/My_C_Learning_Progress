@@ -28,10 +28,11 @@ static void pop_back_impl(DLinkedList *self)
     {
         return;
     }
-    DNode *old_tail = self->tail;
-    self->tail = old_tail->prev;
-    self->tail->next = NULL;
-    free(old_tail);
+    DNode *tail_to_delete = self->tail->prev;
+    DNode *new_tail = tail_to_delete->prev;
+    new_tail->next = self->tail;
+    self->tail->prev = new_tail;
+    free(tail_to_delete);
     self->size--;
 }
 
@@ -74,13 +75,16 @@ static void destory_impl(DLinkedList *self)
         return;
     }
     DNode *current = self->head->next;
-    while(current != NULL)
+    while(current != self->tail)
     {
         DNode *temp = current;
         current = current->next;
         free(temp);
     }
-
+    free(self->head);
+    free(self->tail);
+    free(self);
+    self = NULL;
 }
 
 DLinkedList *create_list()
