@@ -9,7 +9,7 @@ typedef struct Queue Queue;
 struct QNode
 {
     int data;
-    struct Queue *next;
+    struct QNode *next;
 };
 
 struct  Queue
@@ -23,6 +23,6 @@ struct  Queue
     void (*destroy)(Queue *self);  // 销毁
 };
 
-Queue *create_queue();
+Queue *queue_create();
 
 #endif
