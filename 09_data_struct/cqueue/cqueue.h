@@ -16,7 +16,7 @@ struct CQueue {
 
     // 面向对象的技能槽（函数指针）
     bool (*enqueue)(CQueue *self, int val);
-    bool (*dequeue)(CQueue *self);
+    bool (*dequeue)(CQueue *self,int *out_val);
     int (*get_front)(CQueue *self);
     int (*get_rear)(CQueue *self);
     bool (*is_empty)(CQueue *self);
@@ -25,6 +25,6 @@ struct CQueue {
 };
 
 // 暴露给外界的构造函数
-CQueue* CQueue_create(int k);
+CQueue* cqueue_create(int k);
 
 #endif
