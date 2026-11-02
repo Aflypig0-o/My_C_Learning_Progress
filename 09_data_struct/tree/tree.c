@@ -122,7 +122,7 @@ TreeNode *delete_node(TreeNode *root,int key)
             return temp;
         }
         else if(root->right == NULL)
-        {
+        {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
             TreeNode *temp = root->left;
             free(root);
             return temp;
@@ -172,4 +172,4 @@ int main() {
 
     freeTree(root);
     return 0;
-}
+} 
