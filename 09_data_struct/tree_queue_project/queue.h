@@ -2,18 +2,21 @@
 #define QUEUE_H
 #include <stdbool.h>
 #include "tree.h"
-#define MAX_Q_SIZE 100
 
-typedef struct
+typedef struct Queue Queue;
+
+struct Queue
 {
-    TreeNode* data[MAX_Q_SIZE]; 
+    TreeNode **data;
     int front;
     int rear;
-}Queue;
+    int capacity;
+    bool (*is_empty)(Queue *self);
+    void (*enqueue)(Queue *self,TreeNode *node);
+    TreeNode* (*dequeue)(Queue *self);
+    void (*destroy)(Queue *self);
+};
 
-void init_queue(Queue *q);
-bool is_empty(Queue *q);
-void enqueue(Queue *q,TreeNode *node);
-TreeNode *dequeue(Queue *q);
+Queue *queue_create(int capacity);
 
 #endif

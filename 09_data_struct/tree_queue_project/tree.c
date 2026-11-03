@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tree.h"
+#include "queue.h"
 
 TreeNode *insert(TreeNode *root,int val)
 {
@@ -30,5 +31,36 @@ TreeNode *insert(TreeNode *root,int val)
 
 void level_order(TreeNode *root)
 {
-    
+    if(root == NULL)
+    {
+        return;
+    }
+    Queue *q = queue_create(100);
+    q->enqueue(q,root);
+    while(!q->is_empty(q))
+    {
+        TreeNode *current = q->dequeue(q);
+        printf("%d ",current->data);
+        if(current->left != NULL)
+        {
+            q->enqueue(q,current->left);
+        }
+        if(current->right != NULL)
+        {
+            q->enqueue(q,current->right);
+        }
+    }
+    printf("\n");
+    q->destroy(q);
+}
+
+void free_tree(TreeNode *root)
+{
+    if(root == NULL)
+    {
+        return;
+    }
+    free(root->left);
+    free(root->right);
+    free(root);
 }
