@@ -3,4 +3,5 @@ q*.c
 test*.c
 *.o
 *.txt
+*.zip
 special/

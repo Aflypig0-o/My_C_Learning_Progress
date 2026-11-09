@@ -2,19 +2,55 @@
 #include <stdlib.h>
 #include "AVLtree.h"
 
-static AVLNode *rotate_left(AVLNode *y)
+static AVLNode *rotate_right(AVLNode *y)
 {
-
+    AVLNode *x = y->left; /*升上来的那个*/
+    AVLNode *B = x->right; /*y的内孙*/
+    x->right = y; /*让y成为x的右儿子*/
+    y->left = B; /*让y的内孙成为y的左儿子*/
+    y->update_height(y);/*更新y的高度*/
+    x->update_height(x);/*更新x的高度，此处必须先更新y，因为x的高度由y算出*/
+    return x;
 }
 
-static AVLNode *rotate_right(AVLNode *x)
-{
-
+static AVLNode *rotate_left(AVLNode *x)
+{    AVLNode *y = x->right;
+    AVLNode *B = y->left;
+    y->left = x;
+    x->right = B;
+    x->update_height(x);
+    y->update_height(y);
+    return y;
 }
 
-static AVLNode *balance(AVLNode *root)
+static AVLNode *rebalance(AVLNode *root)
 {
-    ;
+    if(root == NULL)
+    {
+        return NULL;
+    }
+    root->update_height(root);
+    int bf = root->get_balance(root);
+
+    if(bf > 1)
+    {
+        if(root->left->get_balance(root->left) >= 0)
+        {
+            return rotate_right(root);//LL，右旋
+        }
+        root->left = rotate_left(root->left);//LR，左旋，右旋
+        return rotate_right(root);
+    }
+    if(bf < -1)
+    {
+        if(root->right->get_balance(root->right) <=0)
+        {
+            return rotate_left(root);//RR，左旋
+        }
+        root->right = rotate_right(root->right);//RL，左旋，右旋
+        return rotate_left(root);
+    }
+    return root;
 }
 
 static int get_height_impl(AVLNode *self)
@@ -122,6 +158,5 @@ AVLNode *insert(AVLNode *root,int val)
         return root;
     }
 
-    root->update_height(root);
-    return balance(root);
+    return rebalance(root);
 }
