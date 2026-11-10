@@ -47,8 +47,17 @@ static AVLNode *rebalance(AVLNode *root)
         {
             return rotate_left(root);//RR，左旋
         }
-        root->right = rotate_right(root->right);//RL，左旋，右旋
+        root->right = rotate_right(root->right);//RL，右旋，左旋
         return rotate_left(root);
+    }
+    return root;
+}
+
+static AVLNode *min_node(AVLNode *root)
+{
+    while(root->left != NULL)
+    {
+        root = root->left;
     }
     return root;
 }
@@ -156,6 +165,42 @@ AVLNode *insert(AVLNode *root,int val)
     else
     {
         return root;
+    }
+
+    return rebalance(root);
+}
+
+AVLNode *avl_delete(AVLNode *root,int val)
+{
+    if(root == NULL)
+    {
+        return NULL;
+    }
+    if(val < root->data)
+    {
+        root->left = avl_delete(root->left,val);
+    }
+    else if (val > root->data)
+    {
+        root->right = avl_delete(root->right,val);
+    }
+    else
+    {
+        if(root->left == NULL)
+        {
+            AVLNode *r = root->right;
+            free(root);
+            return r;
+        }
+        if(root->right == NULL)
+        {
+            AVLNode *l = root->left;
+            free(root);
+            return l;
+        }
+        AVLNode *succ = min_node(root->right);
+        root->data = succ->data;
+        root->right = avl_delete(root->right,succ->data);
     }
 
     return rebalance(root);

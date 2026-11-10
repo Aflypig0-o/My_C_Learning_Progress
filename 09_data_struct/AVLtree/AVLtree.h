@@ -17,5 +17,6 @@ typedef struct AVLNode
 AVLNode *new_node(int val);
 AVLNode *insert(AVLNode *root,int val);
 AVLNode *build_demo();
+AVLNode *avl_delete(AVLNode *root,int val);
 
 #endif
