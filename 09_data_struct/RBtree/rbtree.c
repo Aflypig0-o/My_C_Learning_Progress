@@ -10,7 +10,7 @@ static int is_black(RBNode *root){
     return root == NULL || root->color == BLACK;
 }
 
-static void *rotate_left(RBNode **root,RBNode *x){
+static void rotate_left(RBNode **root,RBNode *x){
     RBNode *y = x->right;
     RBNode *B = y->left;
     x->right = B;
@@ -30,7 +30,7 @@ static void *rotate_left(RBNode **root,RBNode *x){
     y->left = x;
     x->parent = y;
 }
-static void *rotate_right(RBNode **root,RBNode *y){
+static void rotate_right(RBNode **root,RBNode *y){
     RBNode *x = y->left;
     RBNode *B = x->right;
     y->left = B;
@@ -49,6 +49,54 @@ static void *rotate_right(RBNode **root,RBNode *y){
     }
     x->right = y;
     y->parent = x;
+}
+
+static void insert_fixup(RBNode **root,RBNode *z){
+    while(z->parent != NULL && is_red(z->parent)){
+        RBNode *p = z->parent;//z的父节点
+        RBNode *g = p->parent;//z的祖父节点
+        if(p == g->left){//如果p是g的左节点
+            RBNode *u = g->right;//那么，叔叔节点u就是g的右儿子
+            if(is_red(u)){//如果u也为红色，
+                p->color = BLACK;//p变为黑色
+                u->color = BLACK;//u变为黑色
+                g->color = RED;//g变为红色
+                z = g;
+            }
+            else{//u为黑色，进行旋转
+                if(z == p->right){//LR型，拉直后右旋
+                    rotate_left(root,p);
+                    z = p;
+                    p = z->parent;
+                    g = p->parent;
+                }
+                g->color = RED;
+                p->color = BLACK;
+                rotate_right(root,g);//右旋
+            }
+        }
+        else{
+            RBNode *u = g->left;//否则，叔叔节点u就是g的左儿子
+            if(is_red(u)){//如果u也为红色
+                p->color = BLACK;//p变为黑色
+                u->color = BLACK;//u变为黑色
+                g->color = RED;//g变为黑色
+                z = g;
+            }
+            else{//u为黑色
+                if(z == p->left){//RL型，拉直
+                    rotate_right(root,p);
+                    z = p;
+                    p = z->parent;
+                    g = p->parent;
+                }
+                g->color = RED;
+                p->color = BLACK;
+                rotate_left(root,g);//左旋
+            }
+        }
+    }
+    (*root)->color = BLACK;//根必须黑
 }
 
 RBNode *rb_create(int val,int color){
