@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "RBtree.h"
 
-static int is_red(RBNode *root){
+static bool is_red(RBNode *root){
     return root != NULL && root->color == RED;
 }
 
-static int is_black(RBNode *root){
+static bool is_black(RBNode *root){
     return root == NULL || root->color == BLACK;
 }
 
@@ -99,6 +100,79 @@ static void insert_fixup(RBNode **root,RBNode *z){
     (*root)->color = BLACK;//根必须黑
 }
 
+static void rb_destroy_impl(RBNode *root){
+    if(root == NULL) return;
+    rb_destroy_impl(root->left);
+    rb_destroy_impl(root->right);
+    free(root);
+}
+
+static void dump_inorder_impl(RBNode *root){
+    if(root == NULL) return;
+    dump_inorder_impl(root->left);
+    printf("%d ",root->data);
+    dump_inorder_impl(root->right);
+}
+
+static bool check_inorder(RBNode *root,int *prev,bool *first){
+    if(root == NULL)return true;
+    if(!check_inorder(root->left,prev,first)) return false;
+    if(!*first && root->data <= *prev) return false;
+    *first = false;
+    *prev = root->data;
+    return check_inorder(root->right,prev,first);
+}
+
+static bool check_red(RBNode *root){
+    if(root == NULL) return true;
+    if(is_red(root)){
+        if(is_red(root->left) || is_red(root->right)){
+            return false;
+        }
+    }
+    return check_red(root->left) && check_red(root->right);
+}
+
+static int count_black(RBNode *root){
+    if(root == NULL) return 1;
+    int l = count_black(root->left);
+    int r = count_black(root->right);
+    if(l < 0 || r < 0) return -1;
+    if(l != r) return -1;
+    return l + (root->color == BLACK ? 1:0);
+}
+
+RBNode *insert(RBNode *root,int val){
+    RBNode *new_node = rb_create(val,RED);//新建一个new_node节点
+    if(root == NULL){
+        new_node->color = BLACK;//此处插入的是根节点，染黑
+        return new_node;
+    }
+    RBNode *curr  = root,*parent = NULL;
+    while(curr != NULL){
+        parent = curr;//记录curr移动前位置
+        if(val < curr->data){
+        curr = curr->left;
+        }
+        else if(val > curr->data){
+        curr = curr->right;
+        }
+        else{
+            free(new_node);    
+            return root;
+        }
+    }
+    new_node->parent = parent;
+    if(val < parent->data){
+        parent->left = new_node;
+    }
+    else{
+        parent->right = new_node;
+    }
+    insert_fixup(&root,new_node);
+    return root;
+}
+
 RBNode *rb_create(int val,int color){
     RBNode *rb = (RBNode*)malloc(sizeof(RBNode));
     if(rb == NULL){
@@ -108,5 +182,17 @@ RBNode *rb_create(int val,int color){
     rb->data = val;
     rb->color = color;
     rb->left = rb->right = rb->parent = NULL;
+    rb->rb_destroy = rb_destroy_impl;
+    rb->dump_inorder = dump_inorder_impl;
     return rb;
+}
+
+bool rb_check(RBNode *root){
+    int prev = 0;
+    bool first = true;
+    if(!check_inorder(root, &prev, &first)) return false;
+    if(root != NULL && root->color != BLACK) return false;
+    if(!check_red(root)) return false;
+    if(count_black(root) < 0) return false;
+    return true;
 }
