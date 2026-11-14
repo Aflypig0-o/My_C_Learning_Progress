@@ -142,6 +142,10 @@ static int count_black(RBNode *root){
     return l + (root->color == BLACK ? 1:0);
 }
 
+static void transplant(RBNode **root,RBNode *u,RBNode *v){
+
+}
+
 RBNode *insert(RBNode *root,int val){
     RBNode *new_node = rb_create(val,RED);//新建一个new_node节点
     if(root == NULL){
@@ -196,3 +200,4 @@ bool rb_check(RBNode *root){
     if(count_black(root) < 0) return false;
     return true;
 }
+
