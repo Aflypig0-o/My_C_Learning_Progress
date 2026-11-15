@@ -18,4 +18,5 @@ typedef struct RBNode
 RBNode *insert(RBNode *root,int val);
 RBNode *rb_create(int val,int color);
 bool rb_check(RBNode *root);
+RBNode *rb_delete(RBNode *root,int val);
 #endif

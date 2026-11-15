@@ -143,6 +143,38 @@ static int count_black(RBNode *root){
 }
 
 static void transplant(RBNode **root,RBNode *u,RBNode *v){
+    if(u->parent == NULL){//u是根
+        *root = v;//v直接顶替根
+    }
+    else if(u == u->parent->left){//u是他父亲的左儿子
+        u->parent->left = v;
+    }
+    else{//u是他父亲的右儿子
+        u->parent->right = v;
+    }
+    if(v != NULL){
+        v->parent = u->parent;
+    }
+}
+
+static RBNode *min_node(RBNode *root){
+    if(root == NULL){
+        return NULL;
+    }
+    while(root->left != NULL){
+        root = root->left;
+    }
+    return root;
+}
+
+static RBNode *rb_find(RBNode *root, int val)
+{
+    while (root != NULL && root->data != val)
+        root = (val < root->data) ? root->left : root->right;
+    return root;
+}
+
+static void fixup_after_delete(RBNode **root,RBNode *x,RBNode *x_parent){
 
 }
 
@@ -199,5 +231,52 @@ bool rb_check(RBNode *root){
     if(!check_red(root)) return false;
     if(count_black(root) < 0) return false;
     return true;
+}
+
+RBNode *rb_delete(RBNode *root,int val){
+    RBNode *z = rb_find(root,val);
+    if(z == NULL) return root;//没找到
+      /* 新增 3 个变量 */
+    RBNode *x;           /* 顶替上来的节点 */
+    RBNode *x_parent;    /* x 的父亲（x 可能是 NULL） */
+    RBColor y_orig;      /* 被移走的节点原色 */
+    if(z->left == NULL){
+        x = z->right;
+        x_parent = z->parent;
+        y_orig = z->color;
+        transplant(&root,z,z->right);
+    }
+    else if(z->right == NULL){
+        x = z->left;
+        x_parent = z->parent;
+        y_orig = z->color;
+        transplant(&root,z,z->left);
+    }
+    else{
+        RBNode *succ = min_node(z->right);
+        y_orig = succ->color;
+        x = succ->right;
+        if(succ->parent == z){//succ就在z右边
+            x_parent = succ;
+            transplant(&root,z,succ);
+            succ->left = z->left;
+            succ->left->parent = succ;
+        }
+        else{//succ在深处
+            x_parent = succ->parent;
+            transplant(&root,succ,succ->right);
+            succ->right = z->right;
+            succ->right->parent = succ;
+            transplant(&root,z,succ);
+            succ->left = z->left;
+            succ->left->parent = succ;
+        }
+        succ->color = z->color;
+    }
+    if(y_orig == BLACK){
+        fixup_after_delete(&root,x,x_parent);
+    }
+    free(z);
+    return root;
 }
 

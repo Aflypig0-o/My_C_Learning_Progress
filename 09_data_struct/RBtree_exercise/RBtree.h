@@ -9,7 +9,7 @@ typedef struct RBNode{
     struct RBNode *left;
     struct RBNode *right;
     struct RBNode *parent;
-    void (*destroy) (struct RBNode *root);
+    void (*rb_destroy) (struct RBNode *root);
     void (*dump_inorder) (struct RBNode *root);
 }RBNode;
 
